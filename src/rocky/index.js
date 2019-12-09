@@ -205,13 +205,26 @@ rocky.on('minutechange', function(event) {
 
   clock.hours = d.toLocaleTimeString(undefined, {hour: '2-digit'});
   clock.minutes = d.toLocaleTimeString(undefined, {minute: '2-digit'});
+
+  vipassana.now = currentActivityIndex(d);
+  vipassana.next = nextActivityIndex(d);
+
+  // Request the screen to be redrawn on next pass
+  rocky.requestDraw();
+});
+
+rocky.on('daychange', function(event) {
+  // Display a message in the system logs
+  console.log("Another day with your Pebble!");
+
+  var d = event.date;
+
   clock.weekday = getWeekDay(d.getDay());
   clock.date = d.toLocaleDateString(undefined, {day: 'numeric'});
   clock.month = d.toLocaleString(undefined, {month: 'long'});
 
+  // Heavy calculation
   vipassana.day = getCourseDay(d);
-  vipassana.now = currentActivityIndex(d);
-  vipassana.next = nextActivityIndex(d);
 
   // Request the screen to be redrawn on next pass
   rocky.requestDraw();
