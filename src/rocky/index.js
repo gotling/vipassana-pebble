@@ -58,7 +58,8 @@ var clock = {
 var vipassana = {
   day: -1,
   now: 0,
-  next: 1
+  next: 1,
+  nextCourse: -1
 }
 
 function getWeekDay(day) {
@@ -86,7 +87,33 @@ function getCourseDay(date) {
     if ((date >= start) && (date <= end)) {
       return diffDates(date, start);
     }
-  } 
+  }
+
+  return -1;
+}
+
+function getNextCourseIndex(date) {
+  date = getIsoDate(date);
+
+  if (date > new Date(courses[courses.length]).addDays(11)) {
+    // No new courses configured
+    return -1;
+  }
+
+  for (var i = 0; i < courses.length; i++) {
+    var start = new Date(courses[i]);
+    if (date < start) {
+      // First course
+      if (i == 0) {
+        return i;
+      }
+
+      var lastEnd = new Date(courses[i-1]).addDays(11);
+      if (date > lastEnd) {
+        return i;
+      }
+    }
+  }
 
   return -1;
 }
@@ -170,6 +197,21 @@ rocky.on('draw', function(event) {
 
   if (vipassana.day < 0) {
     ctx.fillText('No active course', w / 2, y - 4, w);
+
+    ctx.fillStyle = 'white';
+
+    y+=30;
+    ctx.font = '18px Gothic';
+    ctx.fillText('Next course', w / 2, y, w);
+    y+=20;
+
+    ctx.font = '24px bold Gothic';
+    if (vipassana.nextCourse == -1) {
+      ctx.fillText('Not configured', w / 2, y, w);
+    } else {
+      ctx.fillText(courses[vipassana.nextCourse], w / 2, y, w);
+    }
+
     return;
   }
   
@@ -225,6 +267,10 @@ rocky.on('daychange', function(event) {
 
   // Heavy calculation
   vipassana.day = getCourseDay(d);
+
+  if (vipassana.day == -1) {
+    vipassana.nextCourse = getNextCourseIndex(d);
+  }
 
   // Request the screen to be redrawn on next pass
   rocky.requestDraw();
