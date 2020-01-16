@@ -253,23 +253,24 @@ rocky.on('minutechange', function(event) {
   rocky.requestDraw();
 });
 
-rocky.on('daychange', function(event) {
-  // Display a message in the system logs
-  console.log("Another day with your Pebble!");
-
+rocky.on('hourchange', function(event) {
   var d = event.date;
 
-  clock.weekday = getWeekDay(d.getDay());
-  clock.date = d.toLocaleDateString(undefined, {day: 'numeric'});
-  clock.month = d.toLocaleString(undefined, {month: 'long'});
+  if ((clock.weekday == '') || (d.getHours() == 0)) {
+    // Display a message in the system logs
+    console.log("Another day with your Pebble!");
 
-  // Heavy calculation
-  vipassana.day = getCourseDay(d);
+    clock.weekday = getWeekDay(d.getDay());
+    clock.date = d.toLocaleDateString(undefined, {day: 'numeric'});
+    clock.month = d.toLocaleString(undefined, {month: 'long'});
 
   if (vipassana.day == -1) {
     vipassana.nextCourse = getNextCourseIndex(d);
   }
+    // Heavy calculation
+    vipassana.day = getCourseDay(d);
 
   // Request the screen to be redrawn on next pass
   rocky.requestDraw();
+  }
 });
