@@ -10,24 +10,114 @@ var courses = [
   '2020-05-06'
 ];
 
-var timetable = [
-  {time: 400, text: "Wake up"},
-  {time: 430, text: "Meditation"},
-  {time: 630, text: "Breakfast"},
-  {time: 800, text: "Group sitting"},
-  {time: 900, text: "Meditation"},
-  {time: 1100, text: "Lunch"},
-  {time: 1200, text: "Interviews"},
-  {time: 1300, text: "Meditation"},
-  {time: 1430, text: "Group sitting"},
-  {time: 1530, text: "Meditation"},
-  {time: 1700, text: "Tea"},
-  {time: 1800, text: "Group sitting"},
-  {time: 1900, text: "Discourse"},
-  {time: 2015, text: "Group sitting"},
-  {time: 2100, text: "Questions"},
-  {time: 2200, text: "Lights out"}
-];
+var timetable = {
+  "-1": [
+    {time: 555, text: "Chanting"},
+    {time: 630, text: "Breakfast"},
+    {time: 700, text: "Meeting"},
+    {time: 730, text: "Group sitting"},
+    {time: 830, text: "Work Period"},
+    {time: 1200, text: "Lunch"},
+    {time: 1300, text: "Rest"},
+    {time: 1430, text: "Group sitting"},
+    {time: 1530, text: "Work Period"},
+    {time: 1800, text: "Dinner"},
+    {time: 1930, text: "Group Sitting"},
+    {time: 2030, text: "Metta"},
+    {time: 2200, text: "Lights out"}
+  ],
+  "0": [
+    {time: 555, text: "Chanting"},
+    {time: 630, text: "Breakfast"},
+    {time: 700, text: "Meeting"},
+    {time: 730, text: "Group sitting"},
+    {time: 830, text: "Prepare Kitchen"},
+    {time: 1030, text: "Prepare Registration"},
+    {time: 1130, text: "Lunch"},
+    {time: 1300, text: "Group Sitting"},
+    {time: 1400, text: "Registration"},
+    {time: 1430, text: "Food Preparations"},
+    {time: 1530, text: "Kitchen Meeting"},
+    {time: 1800, text: "Dinner"},
+    {time: 1900, text: "Information"},
+    {time: 2000, text: "Course Starts"},
+    {time: 2200, text: "Lights out"}
+  ],
+  "1": [
+    {time: 400, text: "Wake up"},
+    {time: 430, text: "Meditation"},
+    {time: 630, text: "Breakfast"},
+    {time: 800, text: "Group sitting"},
+    {time: 900, text: "Meditation"},
+    {time: 1100, text: "Lunch"},
+    {time: 1200, text: "Interviews"},
+    {time: 1300, text: "Meditation"},
+    {time: 1430, text: "Group sitting"},
+    {time: 1530, text: "Meditation"},
+    {time: 1700, text: "Tea"},
+    {time: 1800, text: "Group sitting"},
+    {time: 1900, text: "Discourse"},
+    {time: 2015, text: "Group sitting"},
+    {time: 2100, text: "Questions"},
+    {time: 2200, text: "Lights out"}
+  ],
+  "4": [
+    {time: 400, text: "Wake up"},
+    {time: 430, text: "Meditation"},
+    {time: 630, text: "Breakfast"},
+    {time: 800, text: "Group sitting"},
+    {time: 900, text: "Meditation"},
+    {time: 1100, text: "Lunch"},
+    {time: 1200, text: "Interviews"},
+    {time: 1300, text: "Meditation"},
+    {time: 1400, text: "Group sitting"},
+    {time: 1500, text: "Vipassana Teaching"},
+    {time: 1700, text: "Tea"},
+    {time: 1800, text: "Group sitting"},
+    {time: 1900, text: "Discourse"},
+    {time: 2015, text: "Group sitting"},
+    {time: 2100, text: "Questions"},
+    {time: 2200, text: "Lights out"}
+  ],
+  "10": [
+    {time: 400, text: "Wake up"},
+    {time: 430, text: "Meditation"},
+    {time: 630, text: "Breakfast"},
+    {time: 800, text: "Group sitting"},
+    {time: 900, text: "Meditation"},
+    {time: 1010, text: "Noble Silence ends"},
+    {time: 1100, text: "Lunch"},
+    {time: 1200, text: "Interviews"},
+    {time: 1300, text: "Rest"},
+    {time: 1430, text: "Group sitting"},
+    {time: 1550, text: "Rest"},
+    {time: 1600, text: "Information"},
+    {time: 1700, text: "Dinner"},
+    {time: 1800, text: "Group sitting"},
+    {time: 1900, text: "Discourse"},
+    {time: 2015, text: "Rest"},
+    {time: 2200, text: "Lights out"}
+  ],
+  "11": [
+    {time: 400, text: "Wake up"},
+    {time: 430, text: "Group Sitting"},
+    {time: 630, text: "Cleaning"},
+    {time: 700, text: "Breakfast"},
+    {time: 730, text: "Cleaning"},
+    {time: 850, text: "Bus Leaves"},
+    {time: 915, text: "Meeting"},
+    {time: 1000, text: "Work Period"},
+    {time: 1200, text: "Lunch"},
+    {time: 1300, text: "Rest"},
+    {time: 1430, text: "Group sitting"},
+    {time: 1530, text: "Work Period"},
+    {time: 1800, text: "Dinner"},
+    {time: 1930, text: "Group sitting"},
+    {time: 2030, text: "Metta"},
+    {time: 2200, text: "Lights out"}
+  ]
+};
+
 
 var weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -116,12 +206,23 @@ function getNextCourseIndex(date) {
   return -1;
 }
 
+function getTimeTable() {
+  var day = "" + vipassana.day;
+  
+  if (day in timetable) {
+    return timetable[day];
+  }
+
+  return timetable["1"];
+}
+
 function currentActivityIndex(date) {
   date = date.addMinutes(5);
   var hours = date.toLocaleTimeString(undefined, {hour: '2-digit'});
   var minutes = date.toLocaleTimeString(undefined, {minute: '2-digit'});
-
   var time = parseInt(hours + minutes, 10);
+
+  var timetable = getTimeTable();
 
   if ((time < timetable[0].time) || (time >= timetable[timetable.length - 1].time)) {
     return timetable.length - 1;
@@ -137,6 +238,8 @@ function currentActivityIndex(date) {
 }
 
 function nextActivityIndex(date) {
+  var timetable = getTimeTable();
+
   var currentIndex = currentActivityIndex(date);
 
   if (currentIndex == timetable.length - 1) {
@@ -193,46 +296,35 @@ rocky.on('draw', function(event) {
   ctx.fillStyle = 'black';
   ctx.font = '18px bold Gothic';
 
-  if (vipassana.day < 0) {
-    ctx.fillText('No active course', w / 2, y - 4, w);
-
-    ctx.fillStyle = 'white';
-
-    y+=30;
-    ctx.font = '18px Gothic';
-    ctx.fillText('Next course', w / 2, y, w);
-    y+=20;
-
-    ctx.font = '24px bold Gothic';
+  if (vipassana.day == -1) {
     if (vipassana.nextCourse == -1) {
-      ctx.fillText('Not configured', w / 2, y, w);
+      ctx.fillText('Next Course NA', w / 2, y - 4, w);
     } else {
-      ctx.fillText(courses[vipassana.nextCourse], w / 2, y, w);
+      ctx.fillText('Next ' + courses[vipassana.nextCourse], w / 2, y - 4, w);
     }
-
-    return;
+  } else {
+    ctx.fillText('Day ' + vipassana.day, w / 2, y - 4, w);
   }
   
-  ctx.fillText('Day ' + vipassana.day, w / 2, y - 4, w);
   y+=22;
 
   ctx.fillStyle = 'white';
 
-  if ((vipassana.day > 0) && (vipassana.day <= 10)) {
-    // Time
-    ctx.font = '28px light numbers Leco-numbers';
-    ctx.fillText(formatTime(timetable[vipassana.now].time), w / 2, y, w);
-    y+=26;
+  var timetable = getTimeTable();
 
-    // Current
-    ctx.font = '24px bold Gothic';
-    ctx.fillText(timetable[vipassana.now].text, w / 2, y, w);
-    y+=24;
-    
-    // Next
-    ctx.font = '18px Gothic';
-    ctx.fillText(formatTime(timetable[vipassana.next].time) + ' ' + timetable[vipassana.next].text, w / 2, h - 22, w);
-  }
+  // Time
+  ctx.font = '28px light numbers Leco-numbers';
+  ctx.fillText(formatTime(timetable[vipassana.now].time), w / 2, y, w);
+  y+=26;
+
+  // Current
+  ctx.font = '24px bold Gothic';
+  ctx.fillText(timetable[vipassana.now].text, w / 2, y, w);
+  y+=24;
+  
+  // Next
+  ctx.font = '18px Gothic';
+  ctx.fillText(formatTime(timetable[vipassana.next].time) + ' ' + timetable[vipassana.next].text, w / 2, h - 22, w);
 });
 
 rocky.on('minutechange', function(event) {
@@ -264,13 +356,14 @@ rocky.on('hourchange', function(event) {
     clock.date = d.toLocaleDateString(undefined, {day: 'numeric'});
     clock.month = d.toLocaleString(undefined, {month: 'long'});
 
-  if (vipassana.day == -1) {
-    vipassana.nextCourse = getNextCourseIndex(d);
-  }
     // Heavy calculation
     vipassana.day = getCourseDay(d);
 
-  // Request the screen to be redrawn on next pass
-  rocky.requestDraw();
+    if (vipassana.day == -1) {
+      vipassana.nextCourse = getNextCourseIndex(d);
+    }
+
+    // Request the screen to be redrawn on next pass
+    rocky.requestDraw();
   }
 });
