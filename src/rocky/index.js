@@ -1,13 +1,15 @@
 var rocky = require('rocky');
 
 var courses = [
-  '2020-01-08',
-  '2020-01-22',
-  '2020-02-04',
   '2020-02-19',
   '2020-03-04',
   '2020-04-08',
-  '2020-05-06'
+  '2020-05-06',
+  '2020-05-20',
+  '2020-06-02',
+  '2020-06-24',
+  '2020-07-08',
+  '2020-07-22',
 ];
 
 var timetable = {
@@ -33,7 +35,7 @@ var timetable = {
     {time: 730, text: "Group sitting"},
     {time: 830, text: "Prepare Kitchen"},
     {time: 1030, text: "Prepare Registration"},
-    {time: 1130, text: "Lunch"},
+    {time: 1100, text: "Lunch"},
     {time: 1300, text: "Group Sitting"},
     {time: 1400, text: "Registration"},
     {time: 1430, text: "Food Preparations"},
@@ -106,7 +108,8 @@ var timetable = {
     {time: 730, text: "Cleaning"},
     {time: 850, text: "Bus Leaves"},
     {time: 915, text: "Meeting"},
-    {time: 1000, text: "Work Period"},
+    {time: 1000, text: "Group Sitting"},
+    {time: 1100, text: "Work Period"},
     {time: 1200, text: "Lunch"},
     {time: 1300, text: "Rest"},
     {time: 1430, text: "Group sitting"},
