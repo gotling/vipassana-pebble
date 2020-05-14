@@ -351,14 +351,7 @@ rocky.on('minutechange', function(event) {
   vipassana.now = currentActivityIndex(d);
   vipassana.next = nextActivityIndex(d);
 
-  // Request the screen to be redrawn on next pass
-  rocky.requestDraw();
-});
-
-rocky.on('hourchange', function(event) {
-  var d = event.date;
-
-  if ((clock.weekday == '') || (d.getHours() == 0)) {
+  if ((clock.weekday == '') || ((clock.hours == '00') && (clock.minutes == '00'))) {
     // Display a message in the system logs
     console.log("Another day with your Pebble!");
 
@@ -372,8 +365,11 @@ rocky.on('hourchange', function(event) {
     if (vipassana.day == -1) {
       vipassana.nextCourse = getNextCourseIndex(d);
     }
-
-    // Request the screen to be redrawn on next pass
-    rocky.requestDraw();
+    
+    console.log('Another redraw');
   }
+
+  // Request the screen to be redrawn on next pass
+  rocky.requestDraw();
 });
+
