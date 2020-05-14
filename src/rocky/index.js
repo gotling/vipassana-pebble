@@ -209,11 +209,15 @@ function getNextCourseIndex(date) {
   return -1;
 }
 
-function getTimeTable() {
-  var day = "" + vipassana.day;
+function getTimeTable(day) {
+  day = "" + day;
   
   if (day in timetable) {
     return timetable[day];
+  }
+
+  if (day == 12) {
+    return timetable["-1"];
   }
 
   return timetable["1"];
@@ -225,7 +229,7 @@ function currentActivityIndex(date) {
   var minutes = date.toLocaleTimeString(undefined, {minute: '2-digit'});
   var time = parseInt(hours + minutes, 10);
 
-  var timetable = getTimeTable();
+  var timetable = getTimeTable(vipassana.day);
 
   if ((time < timetable[0].time) || (time >= timetable[timetable.length - 1].time)) {
     return timetable.length - 1;
@@ -241,7 +245,7 @@ function currentActivityIndex(date) {
 }
 
 function nextActivityIndex(date) {
-  var timetable = getTimeTable();
+  var timetable = getTimeTable(vipassana.day);
 
   var currentIndex = currentActivityIndex(date);
 
@@ -313,7 +317,7 @@ rocky.on('draw', function(event) {
 
   ctx.fillStyle = 'white';
 
-  var timetable = getTimeTable();
+  var timetable = getTimeTable(vipassana.day);
 
   // Time
   ctx.font = '28px light numbers Leco-numbers';
@@ -327,6 +331,9 @@ rocky.on('draw', function(event) {
   
   // Next
   ctx.font = '18px Gothic';
+  if (vipassana.next == 0) {
+    timetable = getTimeTable(vipassana.day + 1);
+  }
   ctx.fillText(formatTime(timetable[vipassana.next].time) + ' ' + timetable[vipassana.next].text, w / 2, h - 22, w);
 });
 
